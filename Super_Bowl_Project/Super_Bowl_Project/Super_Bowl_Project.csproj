@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data.cs" />
+    <Compile Include="Models\ISuperbowl.cs" />
+    <Compile Include="Models\ITeam.cs" />
+    <Compile Include="Models\Superbowl.cs" />
+    <Compile Include="Models\Team.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
