@@ -14,7 +14,29 @@ namespace Super_Bowl_Project
     {
         static void Main(string[] args)
         {
-            displayContents();
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("1. Display CSV File Contents");
+            var key = Console.ReadLine();
+            try {
+                var choice = Int32.Parse(key);
+                switch (choice)
+                {
+                    case 1:
+                        displayContents();
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+            catch(Exception ex) {
+                Console.WriteLine("An error was encountered.  Please try again.");
+                Console.WriteLine("The Error Message is: " + ex.Message);
+            }
+            finally {
+                Console.WriteLine("Press any key to exit");
+                Console.ReadLine();
+            }
         }
 
         public static void displayContents()
