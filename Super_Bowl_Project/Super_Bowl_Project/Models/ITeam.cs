@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Super_Bowl_Project.Models
 {
-    interface ITeam
+    public interface ITeam
     {
+        string Name { get; set; }
         string Quarterback { get; set; }
         string Coach { get; set; }
-        bool DidWin { get; set; }
         string PointsScored { get; set; }
     }
 }
