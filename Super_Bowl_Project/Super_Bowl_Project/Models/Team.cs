@@ -10,7 +10,7 @@ namespace Super_Bowl_Project.Models
     {
         public string Quarterback { get; set; }
         public string Coach { get; set; }
-        public string DidWin { get; set; }
+        public bool DidWin { get; set; }
         public string PointsScored { get; set; }
     }
 }
