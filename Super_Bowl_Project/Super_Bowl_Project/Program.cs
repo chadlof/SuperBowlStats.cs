@@ -14,26 +14,58 @@ namespace Super_Bowl_Project
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("Do you wish to save the output of this session to a file? [y/n]");
+            var input = Console.ReadKey();
+
+            bool saveOutput = false;
+            
+            TextWriter oldOut = Console.Out;
+
+            if (input.Key == ConsoleKey.Y)
+            {
+                saveOutput = true;
+            }
+
+            Console.WriteLine("What would you like to do next?");
             Console.WriteLine("1. Display CSV File Contents");
-            var key = Console.ReadLine();
+            var key = Console.ReadKey();
             try {
-                var choice = Int32.Parse(key);
-                switch (choice)
-                {
-                    case 1:
-                        displayContents();
-                        break;
-                    default:
-                        break;
-                }
                 
+                if (saveOutput)
+                {
+                    try
+                    {
+                        using (var ostrm = new FileStream("output.txt", FileMode.OpenOrCreate, FileAccess.Write))
+                        {
+                            using (var writer = new StreamWriter(ostrm))
+                            {
+                                Console.SetOut(writer);
+
+                                handleChoice(key.Key);
+                                Console.WriteLine("Beuhler?");
+                            }
+                        }
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        Console.SetOut(oldOut);
+                        Console.WriteLine("Cannot open output.txt for writing");
+                        Console.WriteLine(e.Message);
+                    }
+                }
+                else
+                {
+                    handleChoice(key.Key);
+                }
             }
             catch(Exception ex) {
+                Console.SetOut(oldOut);
                 Console.WriteLine("An error was encountered.  Please try again.");
                 Console.WriteLine("The Error Message is: " + ex.Message);
             }
             finally {
+                Console.SetOut(oldOut);
                 Console.WriteLine("Press any key to exit");
                 Console.ReadLine();
             }
@@ -47,8 +79,25 @@ namespace Super_Bowl_Project
                 Console.WriteLine(String.Join(", ", superbowl.OriginalValues));
             }
             Console.WriteLine("Press any key when finished");
-            Console.ReadLine();
+            Console.ReadKey();
         }
+
+        public static void handleChoice(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    displayContents();
+                    break;
+
+                case ConsoleKey.D2:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         //public static void diplayFile()
         //{
