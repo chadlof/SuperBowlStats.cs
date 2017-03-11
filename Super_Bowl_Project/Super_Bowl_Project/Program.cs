@@ -26,9 +26,7 @@ namespace Super_Bowl_Project
                 saveOutput = true;
             }
 
-            Console.WriteLine("What would you like to do next?");
-            Console.WriteLine("1. Display CSV File Contents");
-            var key = Console.ReadKey();
+            
             try {
                 
                 if (saveOutput)
@@ -41,7 +39,7 @@ namespace Super_Bowl_Project
                             {
                                 Console.SetOut(writer);
 
-                                handleChoice(key.Key);
+                                handleChoice();
                                 Console.WriteLine("Beuhler?");
                             }
                         }
@@ -56,7 +54,7 @@ namespace Super_Bowl_Project
                 }
                 else
                 {
-                    handleChoice(key.Key);
+                    handleChoice();
                 }
             }
             catch(Exception ex) {
@@ -71,6 +69,32 @@ namespace Super_Bowl_Project
             }
         }
 
+        public static void handleChoice()
+        {
+            Console.WriteLine("What would you like to do next?");
+            Console.WriteLine("1. Display CSV File Contents");
+            Console.WriteLine("2. Show Winners");
+            Console.WriteLine("3. Show 5 most attended superbowls");
+            var key = Console.ReadKey();
+            switch (key.Key)
+            {
+                case ConsoleKey.D1:
+                    displayContents();
+                    break;
+
+                case ConsoleKey.D2:
+                    showWinners();
+                    break;
+
+                case ConsoleKey.D3:
+                    mostAttended();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         public static void displayContents()
         {
             var superbowls = DataAccessLayer.Superbowls;
@@ -78,25 +102,42 @@ namespace Super_Bowl_Project
             {
                 Console.WriteLine(String.Join(", ", superbowl.OriginalValues));
             }
-            Console.WriteLine("Press any key when finished");
-            Console.ReadKey();
         }
 
-        public static void handleChoice(ConsoleKey key)
+        public static void showWinners()
         {
-            switch (key)
+            Console.WriteLine("Superbowl Winners");
+            Console.WriteLine("Superbowl | Team Name | Year | Quarterback | Coach | MVP Name | Spread");
+            Console.WriteLine("======================================================================");
+            Console.WriteLine();
+            var superbowls = DataAccessLayer.Superbowls;
+            foreach (var superbowl in superbowls)
             {
-                case ConsoleKey.D1:
-                    displayContents();
-                    break;
-
-                case ConsoleKey.D2:
-
-                    break;
-                default:
-                    break;
+                var winner = superbowl.WinningTeam;
+                var year = superbowl.Date.Year;
+                var spread = winner.PointsScored - superbowl.LosingTeam.PointsScored;
+                var line = String.Format("{0} | {1} | {2} | {3} | {4} | {5} | {6}", superbowl.Numeral, winner.Name, year, winner.Quarterback, winner.Coach, superbowl.Mvp, spread);
+                Console.WriteLine(line);
             }
         }
+
+        public static void mostAttended()
+        {
+            Console.WriteLine("Top 5 most attended Superbowl Winners");
+            Console.WriteLine("Year | Winning Team | Losing Team | City | State | Stadium");
+            Console.WriteLine("======================================================================");
+            Console.WriteLine();
+            var superbowls = DataAccessLayer.Superbowls.OrderByDescending(x => x.Attendance).Take(5);
+            foreach (var superbowl in superbowls)
+            {
+                var winner = superbowl.WinningTeam;
+                var loser = superbowl.LosingTeam;
+                var year = superbowl.Date.Year;
+                var line = String.Format("{0} | {1} | {2} | {3} | {4} | {5}", year, winner.Name, loser.Name, superbowl.City, superbowl.State, superbowl.Stadium);
+                Console.WriteLine(line);
+            }
+        }
+       
 
 
         //public static void diplayFile()

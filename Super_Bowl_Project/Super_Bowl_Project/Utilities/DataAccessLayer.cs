@@ -40,7 +40,7 @@ namespace Super_Bowl_Project.Utilities
             var lines = new List<string[]>();
             try
             {
-                var contents = File.ReadAllText(filename).Split(new [] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var contents = File.ReadAllText(filename).Replace("\r","").Split(new [] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                 lines = contents.Select(line => line.Split(',').ToArray()).ToList();
 

@@ -11,6 +11,6 @@ namespace Super_Bowl_Project.Models
         public string Name { get; set; }
         public string Quarterback { get; set; }
         public string Coach { get; set; }
-        public string PointsScored { get; set; }
+        public int PointsScored { get; set; }
     }
 }
