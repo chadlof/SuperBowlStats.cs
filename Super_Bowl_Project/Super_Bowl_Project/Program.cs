@@ -75,6 +75,7 @@ namespace Super_Bowl_Project
             Console.WriteLine("1. Display CSV File Contents");
             Console.WriteLine("2. Show Winners");
             Console.WriteLine("3. Show 5 most attended superbowls");
+            Console.WriteLine("4. Show superbowls hosted by state");
             var key = Console.ReadKey();
             switch (key.Key)
             {
@@ -88,6 +89,10 @@ namespace Super_Bowl_Project
 
                 case ConsoleKey.D3:
                     mostAttended();
+                    break;
+
+                case ConsoleKey.D4:
+                    statesWithMostSuperbowls();
                     break;
 
                 default:
@@ -134,6 +139,32 @@ namespace Super_Bowl_Project
                 var loser = superbowl.LosingTeam;
                 var year = superbowl.Date.Year;
                 var line = String.Format("{0} | {1} | {2} | {3} | {4} | {5}", year, winner.Name, loser.Name, superbowl.City, superbowl.State, superbowl.Stadium);
+                Console.WriteLine(line);
+            }
+        }
+
+        public static void statesWithMostSuperbowls()
+        {
+            Console.WriteLine("Most Superbowls By City, State, and Stadium");
+            Console.WriteLine("City | State | Stadium | # of Superbowls");
+            Console.WriteLine("======================================================================");
+            Console.WriteLine();
+
+            // Trim list down to just State
+            var superbowlStates = DataAccessLayer.Superbowls.Select(x => new { State = x.State });
+
+            // Eliminate duplicate states
+            superbowlStates = superbowlStates.Distinct();
+
+            foreach (var entry in superbowlStates)
+            {
+                //Get count of superbowls held in this city + state + stadium combination
+                var superbowls = DataAccessLayer.Superbowls.Where(x => x.State == entry.State);
+
+                // Get first superbowl so we can grab the city and stadium
+                var market = superbowls.Select(x => new { City = x.City, Stadium = x.Stadium }).First();
+
+                var line = String.Format("{0} | {1} | {2} | {3}", market.City, entry.State, market.Stadium, superbowls.Count());
                 Console.WriteLine(line);
             }
         }
