@@ -14,56 +14,28 @@ namespace Super_Bowl_Project
     {
         static void Main(string[] args)
         {
+            TextWriter originalOut = Console.Out;
+
             Console.WriteLine("Do you wish to save the output of this session to a file? [y/n]");
             var input = Console.ReadKey();
 
             bool saveOutput = false;
-            
-            TextWriter oldOut = Console.Out;
 
             if (input.Key == ConsoleKey.Y)
             {
                 saveOutput = true;
             }
 
-            
             try {
-                
-                if (saveOutput)
-                {
-                    try
-                    {
-                        using (var ostrm = new FileStream("output.txt", FileMode.OpenOrCreate, FileAccess.Write))
-                        {
-                            using (var writer = new StreamWriter(ostrm))
-                            {
-                                Console.SetOut(writer);
-
-                                Menu.HandleChoice();
-                                Console.WriteLine("Beuhler?");
-                            }
-                        }
-                        
-                    }
-                    catch (Exception e)
-                    {
-                        Console.SetOut(oldOut);
-                        Console.WriteLine("Cannot open output.txt for writing");
-                        Console.WriteLine(e.Message);
-                    }
-                }
-                else
-                {
-                    Menu.HandleChoice();
-                }
+                Menu.HandleChoice(saveOutput);                
             }
             catch(Exception ex) {
-                Console.SetOut(oldOut);
+                Console.SetOut(originalOut);
                 Console.WriteLine("An error was encountered.  Please try again.");
                 Console.WriteLine("The Error Message is: " + ex.Message);
             }
             finally {
-                Console.SetOut(oldOut);
+                Console.SetOut(originalOut);
                 Console.WriteLine("Press any key to exit");
                 Console.ReadLine();
             }

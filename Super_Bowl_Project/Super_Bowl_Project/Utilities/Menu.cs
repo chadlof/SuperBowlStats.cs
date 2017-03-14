@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,59 +9,52 @@ namespace Super_Bowl_Project.Utilities
 {
     public static class Menu
     {
-        public static void HandleChoice()
+        static TextWriter _oldOut;
+        static TextWriter _newOut;
+        static bool _saveOutput;
+
+        public static void HandleChoice(bool saveOutput)
         {
-            Console.WriteLine("What would you like to do next?");
-            Console.WriteLine("1. Display CSV File Contents");
-            Console.WriteLine("2. Show Winners");
-            Console.WriteLine("3. Show 5 most attended superbowls");
-            Console.WriteLine("4. Show superbowls hosted by state");
-            Console.WriteLine("5. Players with most MVPs");
-            Console.WriteLine("6. Trivia");
-            Console.WriteLine("7. All the things!");
-            var key = Console.ReadKey();
-            switch (key.Key)
+            _saveOutput = saveOutput;
+            if (_saveOutput)
             {
-                case ConsoleKey.D1:
-                    DisplayContents();
-                    break;
+                _oldOut = Console.Out;
+                try
+                {
+                    using (var ostrm = new FileStream("C:/Code/output.txt", FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        using (var writer = new StreamWriter(ostrm))
+                        {
+                            writer.AutoFlush = true;
+                            _newOut = writer;
+                            Console.SetOut(_newOut);
 
-                case ConsoleKey.D2:
-                    ShowWinners();
-                    break;
+                            renderMenu();             
+                        }
+                    }
 
-                case ConsoleKey.D3:
-                    MostAttended();
-                    break;
-
-                case ConsoleKey.D4:
-                    StatesWithMostSuperbowls();
-                    break;
-
-                case ConsoleKey.D5:
-                    PlayersWithMostMVPs();
-                    break;
-
-                case ConsoleKey.D6:
-                    Trivia();
-                    break;
-
-                case ConsoleKey.D7:
-                    DisplayContents();
-                    ShowWinners();
-                    MostAttended();
-                    StatesWithMostSuperbowls();
-                    PlayersWithMostMVPs();
-                    Trivia();
-                    break;
-
-                default:
-                    break;
+                }
+                catch (Exception e)
+                {
+                    Console.SetOut(_oldOut);
+                    Console.WriteLine("Cannot open output.txt for writing");
+                    Console.WriteLine(e.Message);
+                }
             }
+            else
+            {
+                renderMenu();
+            }
+            
         }
+
+        #region Answers
 
         public static void DisplayContents()
         {
+            Console.WriteLine();
+            Console.WriteLine("Display File Contents");
+            Console.WriteLine("======================================================================");
             Console.WriteLine();
             var superbowls = DataAccessLayer.Superbowls;
             foreach (var superbowl in superbowls)
@@ -208,6 +202,74 @@ namespace Super_Bowl_Project.Utilities
             Console.WriteLine("What has been the average attendance of all super bowls? -> {0}", averageAttendance);
             Console.WriteLine();
 
+        }
+
+        #endregion
+
+        static void _handleSaveOutput()
+        {
+            
+        }
+
+        static void renderMenu()
+        {
+            if(_saveOutput)
+            {
+                Console.SetOut(_oldOut);
+            }
+            
+            Console.WriteLine("What would you like to do next?");
+            Console.WriteLine("1. Display CSV File Contents");
+            Console.WriteLine("2. Show Winners");
+            Console.WriteLine("3. Show 5 most attended superbowls");
+            Console.WriteLine("4. Show superbowls hosted by state");
+            Console.WriteLine("5. Players with most MVPs");
+            Console.WriteLine("6. Trivia");
+            Console.WriteLine("7. All the things!");
+            var key = Console.ReadKey();
+
+            if (_saveOutput)
+            {
+                Console.SetOut(_newOut);
+            }
+            switch (key.Key)
+            {
+                case ConsoleKey.D1:
+                    DisplayContents();
+                    break;
+
+                case ConsoleKey.D2:
+                    ShowWinners();
+                    break;
+
+                case ConsoleKey.D3:
+                    MostAttended();
+                    break;
+
+                case ConsoleKey.D4:
+                    StatesWithMostSuperbowls();
+                    break;
+
+                case ConsoleKey.D5:
+                    PlayersWithMostMVPs();
+                    break;
+
+                case ConsoleKey.D6:
+                    Trivia();
+                    break;
+
+                case ConsoleKey.D7:
+                    DisplayContents();
+                    ShowWinners();
+                    MostAttended();
+                    StatesWithMostSuperbowls();
+                    PlayersWithMostMVPs();
+                    Trivia();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
