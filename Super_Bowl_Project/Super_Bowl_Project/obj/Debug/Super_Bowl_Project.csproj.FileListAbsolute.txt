@@ -16,3 +16,6 @@ C:\Code\SuperBowlStats.cs\Super_Bowl_Project\Super_Bowl_Project\obj\Debug\Super_
 C:\Code\SuperBowlStats.cs\Super_Bowl_Project\Super_Bowl_Project\bin\Debug\Super_Bowl_Project.exe.config
 C:\Code\SuperBowlStats.cs\Super_Bowl_Project\Super_Bowl_Project\bin\Debug\Super_Bowl_Project.exe
 C:\Code\SuperBowlStats.cs\Super_Bowl_Project\Super_Bowl_Project\bin\Debug\Super_Bowl_Project.pdb
+C:\Users\lofchaa\Documents\+Spring2017\superbowl\Super_Bowl_Project\Super_Bowl_Project\bin\Debug\Super_Bowl_Project.exe.config
+C:\Users\lofchaa\Documents\+Spring2017\superbowl\Super_Bowl_Project\Super_Bowl_Project\obj\Debug\Super_Bowl_Project.exe
+C:\Users\lofchaa\Documents\+Spring2017\superbowl\Super_Bowl_Project\Super_Bowl_Project\obj\Debug\Super_Bowl_Project.pdb
